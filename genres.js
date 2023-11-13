@@ -2,14 +2,14 @@ const express = require("express");
 const Joi = require("joi");
 const log = require("./logger");
 const morgan = require("morgan");
+const config =require("config")
 const authenticate = require("./authentication");
 const app = express();
-
 app.use(express.json());
-app.use(authenticate);
-app.use(log);
+// app.use(authenticate);
+// app.use(log);
 
-if (app.get("env") === "development") {
+if (app.get("env")   === "development") {
   app.use(morgan("tiny"));
 }
 
@@ -64,9 +64,11 @@ app.get("/api/genres", (req, res) => {
   res.status(200).send(genres);
 });
 
-console.log(process.env);
+// console.log(`Application Name: ${config.get('name')}`);
+// console.log(`main server ${config.get('mail.host')}`);
 
-const port = 3000;
+
+const port = process.env.PORT || 3000;
 app.listen(port, () => {
-  console.log(`listening on port ${port}`);
+  console.log(`listening on port ${port}...`);
 });
